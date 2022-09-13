@@ -135,4 +135,12 @@ class Exam
     {
         return $this->grade;
     }
+
+    /**
+     * @return ArrayCollection|Collection
+     */
+    public function getAnswers(): ArrayCollection|Collection
+    {
+        return $this->answers;
+    }
 }
