@@ -2,6 +2,8 @@
 
 namespace App\Packages\Exam\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Illuminate\Support\Str;
 
@@ -28,11 +30,17 @@ class Question
      */
     protected Subject $subject;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Option", mappedby="question", cascade={"all"}, orphanRemoval=true)
+     */
+    protected Collection $options;
+
     public function __construct(string $content, Subject $subject)
     {
         $this->id = Str::uuid()->toString();
         $this->content = $content;
         $this->subject = $subject;
+        $this->options = new ArrayCollection();
     }
 
 
