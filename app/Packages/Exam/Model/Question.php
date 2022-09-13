@@ -59,4 +59,12 @@ class Question
     {
         return $this->content;
     }
+
+    /**
+     * @return ArrayCollection|Collection
+     */
+    public function getOptions(): ArrayCollection|Collection
+    {
+        return $this->options;
+    }
 }
