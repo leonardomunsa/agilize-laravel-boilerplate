@@ -19,4 +19,9 @@ class SubjectService
             $this->subjectRepository->addSubject($subject);
             return 'Subject ' . $name . ' registered!';
     }
+
+    public function getSubjectByName(string $name): ?Subject
+    {
+        return $this->subjectRepository->findSubjectByName($name);
+    }
 }
