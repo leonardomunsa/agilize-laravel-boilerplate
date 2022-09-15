@@ -3,7 +3,6 @@
 namespace App\Packages\Exam\Model;
 
 use App\Packages\Student\Model\Student;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Illuminate\Support\Str;
@@ -55,11 +54,6 @@ class Exam
      */
     protected float $grade;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Answer", mappedBy="exam", cascade={"all"}, orphanRemoval=true)
-     */
-    protected Collection $answers;
-
     public function __construct(int $questionsAmount, string $status, Subject $subject, \DateTime $startTime, Student $student, float $grade)
     {
         $this->id = Str::uuid()->toString();
@@ -69,7 +63,6 @@ class Exam
         $this->startTime = $startTime;
         $this->student = $student;
         $this->grade = $grade;
-        $this->answers = new ArrayCollection();
     }
 
     /**

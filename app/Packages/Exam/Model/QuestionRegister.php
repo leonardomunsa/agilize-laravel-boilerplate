@@ -7,9 +7,9 @@ use Illuminate\Support\Str;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="answer")
+ * @ORM\Table(name="question_register")
  */
-class Answer
+class QuestionRegister
 {
     /**
      * @ORM\Id
@@ -18,26 +18,21 @@ class Answer
     protected string $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Question")
-     */
-    protected Question $question;
-
-    /**
      * @ORM\ManyToOne(targetEntity="Exam")
      */
     protected Exam $exam;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Option")
+     * @ORM\Id
+     * @ORM\Column(type="string")
      */
-    protected Option $pickedOption;
+    protected string $content;
 
-    public function __construct(Question $question, Exam $exam, Option $pickedOption)
+    public function __construct(string $content, Exam $exam)
     {
         $this->id = Str::uuid()->toString();
-        $this->question = $question;
+        $this->content = $content;
         $this->exam = $exam;
-        $this->pickedOption = $pickedOption;
     }
 
 
@@ -49,13 +44,6 @@ class Answer
         return $this->id;
     }
 
-    /**
-     * @return Question
-     */
-    public function getQuestionId(): Question
-    {
-        return $this->question;
-    }
 
     /**
      * @return Exam
@@ -66,10 +54,10 @@ class Answer
     }
 
     /**
-     * @return Option
+     * @return string
      */
-    public function getPickedOption(): Option
+    public function getContent(): string
     {
-        return $this->pickedOption;
+        return $this->content;
     }
 }
