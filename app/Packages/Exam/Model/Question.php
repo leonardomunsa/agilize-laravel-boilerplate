@@ -31,7 +31,7 @@ class Question
     protected Subject $subject;
 
     /**
-     * @ORM\OneToMany(targetEntity="Option", mappedby="question", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="Option", mappedBy="question", cascade={"all"}, orphanRemoval=true)
      */
     protected Collection $options;
 
