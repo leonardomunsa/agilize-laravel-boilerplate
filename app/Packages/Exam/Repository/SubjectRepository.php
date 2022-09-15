@@ -13,6 +13,10 @@ class SubjectRepository extends AbstractRepository
     public function addSubject(Subject $subject)
     {
         EntityManager::persist($subject);
-        EntityManager::flush();
+    }
+
+    public function findSubjectByName(string $name): ?Subject
+    {
+        return $this->findOneBy(['name' => $name]);
     }
 }
