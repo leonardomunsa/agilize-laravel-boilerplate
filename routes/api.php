@@ -1,5 +1,6 @@
 <?php
 
+use App\Packages\Exam\Controller\OptionController;
 use App\Packages\Exam\Controller\SubjectController;
 use App\Packages\Student\Controller\StudentController;
 use App\Packages\Exam\Controller\QuestionController;
@@ -26,3 +27,5 @@ Route::post('/student', [StudentController::class, 'store']);
 Route::post('/subject', [SubjectController::class, 'store']);
 
 Route::post('/question', [QuestionController::class, 'store']);
+
+Route::post('/option/{id}', [OptionController::class, 'store']);

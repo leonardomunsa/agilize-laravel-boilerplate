@@ -2,6 +2,7 @@
 
 namespace App\Packages\Exam\Facade;
 
+use App\Packages\Exam\Model\Question;
 use App\Packages\Exam\Service\QuestionService;
 use App\Packages\Exam\Service\SubjectService;
 
@@ -22,5 +23,10 @@ class ExamFacade
     public function enrollQuestion(string $content, string $subject): string
     {
         return $this->questionService->enrollQuestion($content, $subject);
+    }
+
+    public function enrollOptions(array $options, string $questionId): Question
+    {
+        return $this->optionService->enrollOptions($options, $questionId);
     }
 }
