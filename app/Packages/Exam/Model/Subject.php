@@ -18,7 +18,6 @@ class Subject
     protected string $id;
 
     /**
-     * @ORM\Id
      * @ORM\Column(type="string", length=246)
      */
     protected string $name;

@@ -2,7 +2,9 @@
 
 namespace App\Packages\Exam\Service;
 
+use App\Packages\Exam\Model\Option;
 use App\Packages\Exam\Model\Question;
+use App\Packages\Exam\Repository\OptionRepository;
 use App\Packages\Exam\Repository\QuestionRepository;
 
 class OptionService
@@ -16,17 +18,24 @@ class OptionService
     {
     }
 
-    public function enrollQuestion(array $options, string $subject): string
+    public function enrollOptions(array $options, string $questionId): string
     {
+        $question = $this->questionRepository->findQuestionById($questionId);
         if (!($this->checkIfOptionsAreEmpty($options) && $this->checkIfAtLeastTwoOptionsAreEqual($options))) {
-
+            foreach ($options as $option) {
+                $newOption = new Option($option['content'], $option['correct'], $question);
+                $this->optionRepository->addOption($newOption);
+            }
+            return 'The options are registered';
         }
+        return 'The options are either empty or equal to one another';
     }
 
     public function checkIfOptionsAreEmpty(array $options): bool
     {
-        foreach ($options as $option) {
-            if (!(strlen($option) < self::MIN_LENGTH_OPTION)) {
+        for ($i = 0; $i <= count($options); $i++) {
+            $content = $options[$i]['content'];
+            if (!(strlen($content < self::MIN_LENGTH_OPTION))) {
                 return true;
             };
         }
@@ -35,6 +44,6 @@ class OptionService
 
     public function checkIfAtLeastTwoOptionsAreEqual(array $options): bool
     {
-        return count(array_unique($options)) === count($options) - 1;
+        return count(array_unique($options, SORT_REGULAR)) === count($options) - 1;
     }
 }

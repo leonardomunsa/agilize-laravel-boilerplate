@@ -15,14 +15,17 @@ class OptionController
     {
     }
 
+    /**
+     * @throws Exception
+     */
     public function store(Request $request): JsonResponse
     {
         try {
             $options = $request->get('options');
-            $questionId = $request->route('id');
-            $this->examFacade->enrollOptions($options, $questionId);
+            $questionId = $request->input('id');
+            $response = $this->examFacade->enrollOptions($options, $questionId);
 
-            return response()->json();
+            return response()->json($response);
         } catch (Exception $exception) {
             throw new Exception($exception->getMessage(), 1663286854);
         }

@@ -20,7 +20,6 @@ class Question
     protected string $id;
 
     /**
-     * @ORM\Id
      * @ORM\Column(type="string")
      */
     protected string $content;
