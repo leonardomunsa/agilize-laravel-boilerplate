@@ -14,4 +14,9 @@ class QuestionRepository extends AbstractRepository
     {
         EntityManager::persist($question);
     }
+
+    public function findQuestionById(string $questionId)
+    {
+        return $this->findOneBy(['id' => $questionId]);
+    }
 }
