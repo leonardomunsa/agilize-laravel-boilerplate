@@ -28,4 +28,4 @@ Route::post('/subject', [SubjectController::class, 'store']);
 
 Route::post('/question', [QuestionController::class, 'store']);
 
-Route::post('/option', [OptionController::class, 'store']);
+Route::post('/question/{id}/option', [OptionController::class, 'store']);
