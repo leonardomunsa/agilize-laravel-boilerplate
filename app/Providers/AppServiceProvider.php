@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
-use App\Packages\DoctrineMigration\Command\MigrationsDiffCommand;
-use App\Packages\DoctrineMigration\Command\MigrationsMigrateCommand;
-use App\Packages\DoctrineMigration\Command\MigrationsStatusCommand;
+use App\Packages\Doctrine\DoctrineMigration\Command\MigrationsDiffCommand;
+use App\Packages\Doctrine\DoctrineMigration\Command\MigrationsMigrateCommand;
+use App\Packages\Doctrine\DoctrineMigration\Command\MigrationsStatusCommand;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider

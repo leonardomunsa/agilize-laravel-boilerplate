@@ -54,7 +54,7 @@ class Exam
      */
     protected float $grade;
 
-    public function __construct(int $questionsAmount, string $status, Subject $subject, \DateTime $startTime, Student $student, float $grade)
+    public function __construct(int $questionsAmount, string $status, Subject $subject, \DateTime $startTime, Student $student, float $grade = null)
     {
         $this->id = Str::uuid()->toString();
         $this->questionsAmount = $questionsAmount;

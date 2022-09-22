@@ -66,4 +66,9 @@ class Question
     {
         return $this->options;
     }
+
+    public function addOption(Option $option): void
+    {
+        $this->options->add($option);
+    }
 }

@@ -35,7 +35,6 @@ class QuestionRegister
         $this->exam = $exam;
     }
 
-
     /**
      * @return string
      */

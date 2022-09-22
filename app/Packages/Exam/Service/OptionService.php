@@ -13,7 +13,7 @@ class OptionService
 
     public function __construct(
         protected QuestionRepository $questionRepository,
-        protected OptionRepository $optionRepository
+        protected OptionRepository $optionRepository,
     )
     {
     }
@@ -25,6 +25,7 @@ class OptionService
             foreach ($options as $option) {
                 $newOption = new Option($option['content'], $option['correct'], $question);
                 $this->optionRepository->addOption($newOption);
+                $question->addOption($newOption);
             }
             return 'The options are registered';
         }

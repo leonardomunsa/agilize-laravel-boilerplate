@@ -15,4 +15,9 @@ class StudentRepository extends AbstractRepository
         EntityManager::persist($student);
         EntityManager::flush();
     }
+
+    public function findStudentById(string $studentId)
+    {
+        return $this->findOneBy(['id' => $studentId]);
+    }
 }

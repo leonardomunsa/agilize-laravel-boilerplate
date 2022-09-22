@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Packages\Exam\Controller;
+namespace App\Http\Controllers;
 
 use App\Packages\Exam\Facade\ExamFacade;
 use Exception;

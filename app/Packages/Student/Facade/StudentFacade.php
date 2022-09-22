@@ -2,6 +2,7 @@
 
 namespace App\Packages\Student\Facade;
 
+use App\Packages\Student\Model\Student;
 use App\Packages\Student\Service\StudentService;
 
 class StudentFacade
@@ -15,5 +16,10 @@ class StudentFacade
     public function enrollStudent(string $name): string
     {
         return $this->studentService->enrollStudent($name);
+    }
+
+    public function getStudent(string $studentId): Student
+    {
+        return $this->studentService->getStudent($studentId);
     }
 }

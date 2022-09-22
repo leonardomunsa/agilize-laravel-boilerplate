@@ -1,18 +1,17 @@
 <?php
 
-namespace App\Packages\Student\Controller;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Packages\Student\Facade\StudentFacade;
+use App\Packages\Exam\Facade\ExamFacade;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use LaravelDoctrine\ORM\Facades\EntityManager;
 
-class StudentController extends Controller
+class ExamController extends Controller
 {
     public function __construct(
-        protected StudentFacade $studentFacade
+        protected ExamFacade $subjectFacade
     )
     {
     }
@@ -23,12 +22,13 @@ class StudentController extends Controller
     public function store(Request $request): JsonResponse
     {
         try {
-            $studentName = $request->get('name');
+            $studentId = $request->header('id');
 
-            $response = $this->studentFacade->enrollStudent($studentName);
+            $response = $this->subjectFacade->startExam($studentId);
+            EntityManager::flush();
             return response()->json($response);
         } catch (Exception $exception) {
-            throw new Exception($exception->getMessage(), 1663076218);
+            throw new Exception($exception->getMessage(), 1663106115);
         }
     }
 }
