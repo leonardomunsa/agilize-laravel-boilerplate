@@ -5,6 +5,8 @@ namespace App\Packages\Exam\Repository;
 use App\Packages\Base\AbstractRepository;
 use App\Packages\Exam\Model\Option;
 use App\Packages\Exam\Model\Question;
+use App\Packages\Exam\Model\Subject;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\Query\Expr\Join;
 use LaravelDoctrine\ORM\Facades\EntityManager;
 
@@ -22,16 +24,18 @@ class QuestionRepository extends AbstractRepository
         return $this->findOneBy(['id' => $questionId]);
     }
 
-    public function getAmountOfQuestions($subjectId, $limit)
+    public function getAmountOfQuestions($limit, $subject)
     {
         $entityManager = $this->getEntityManager();
         $queryBuilder = $entityManager->createQueryBuilder();
         return $queryBuilder
-            ->select('q.content, o.content')
+            ->select('q')
             ->from($this->entityName, 'q')
             ->where('q.subject = :subject')
-            ->setParameter('subject', $subjectId)
+            ->setParameter('subject', $subject)
             ->orderBy('RANDOM()')
-            ->setMaxResults($limit);
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
     }
 }

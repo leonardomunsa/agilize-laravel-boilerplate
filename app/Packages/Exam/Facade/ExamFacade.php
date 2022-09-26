@@ -36,9 +36,22 @@ class ExamFacade
         return $this->optionService->enrollOptions($options, $questionId);
     }
 
-    public function startExam(string $studentId)
+    public function startExam(string $studentId, string $subjectName)
     {
         $student = $this->studentFacade->getStudent($studentId);
-        return $this->examService->startExam($student);
+        $questions = $this->examService->startExam($student, $subjectName);
+        $questionsCollection = collect();
+        /** @var Question $question */
+        foreach ($questions as $question) {
+            $questionsCollection->add([
+                'question' => $question->getQuestion(),
+                'options' =>
+                    array_map(function ($option) {
+                        return $option->getContent();
+                    }, $question->getOptions()->toArray())
+            ]);
+        }
+
+        return $questionsCollection;
     }
 }

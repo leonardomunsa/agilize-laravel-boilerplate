@@ -23,9 +23,10 @@ class ExamController extends Controller
     {
         try {
             $studentId = $request->header('id');
+            $subjectName = $request->get('subject');
 
-            $response = $this->subjectFacade->startExam($studentId);
-            EntityManager::flush();
+            $response = $this->subjectFacade->startExam($studentId, $subjectName);
+//            EntityManager::flush();
             return response()->json($response);
         } catch (Exception $exception) {
             throw new Exception($exception->getMessage(), 1663106115);

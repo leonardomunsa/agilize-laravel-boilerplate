@@ -42,7 +42,6 @@ class Question
         $this->options = new ArrayCollection();
     }
 
-
     /**
      * @return string
      */

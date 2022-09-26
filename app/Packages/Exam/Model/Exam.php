@@ -52,9 +52,9 @@ class Exam
     /**
      * @ORM\Column(type="float", nullable=true)
      */
-    protected float $grade;
+    protected null|float $grade;
 
-    public function __construct(int $questionsAmount, string $status, Subject $subject, \DateTime $startTime, Student $student, float $grade = null)
+    public function __construct(int $questionsAmount, string $status, Subject $subject, \DateTime $startTime, Student $student, null|float $grade = null)
     {
         $this->id = Str::uuid()->toString();
         $this->questionsAmount = $questionsAmount;
