@@ -75,8 +75,8 @@ class QuestionRegister
         return $this->options;
     }
 
-    public function addOption(Option $option): void
+    public function addOption(OptionRegister $optionRegister): void
     {
-        $this->options->add($option);
+        $this->options->add($optionRegister);
     }
 }

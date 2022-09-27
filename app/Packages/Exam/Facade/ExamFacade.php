@@ -8,6 +8,7 @@ use App\Packages\Exam\Service\OptionService;
 use App\Packages\Exam\Service\QuestionService;
 use App\Packages\Exam\Service\SubjectService;
 use App\Packages\Student\Facade\StudentFacade;
+use App\Packages\Student\Model\Student;
 
 class ExamFacade
 {
@@ -16,7 +17,6 @@ class ExamFacade
         protected QuestionService $questionService,
         protected OptionService $optionService,
         protected ExamService $examService,
-        protected StudentFacade $studentFacade
     )
     {
     }
@@ -36,22 +36,8 @@ class ExamFacade
         return $this->optionService->enrollOptions($options, $questionId);
     }
 
-    public function startExam(string $studentId, string $subjectName)
+    public function startExam(Student $student, string $subjectName)
     {
-        $student = $this->studentFacade->getStudent($studentId);
-        $questions = $this->examService->startExam($student, $subjectName);
-        $questionsCollection = collect();
-        /** @var Question $question */
-        foreach ($questions as $question) {
-            $questionsCollection->add([
-                'question' => $question->getQuestion(),
-                'options' =>
-                    array_map(function ($option) {
-                        return $option->getContent();
-                    }, $question->getOptions()->toArray())
-            ]);
-        }
-
-        return $questionsCollection;
+        return $this->examService->startExam($student, $subjectName);
     }
 }
