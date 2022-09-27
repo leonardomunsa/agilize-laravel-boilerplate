@@ -1,5 +1,7 @@
 <?php
 
+use App\Packages\Doctrine\Utils\Random;
+
 return [
 
     /*
@@ -125,7 +127,9 @@ return [
     | DQL custom numeric functions
     |--------------------------------------------------------------------------
     */
-    'custom_numeric_functions'   => [],
+    'custom_numeric_functions'   => [
+        'RANDOM' => Random::class
+    ],
     /*
     |--------------------------------------------------------------------------
     | DQL custom string functions

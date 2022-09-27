@@ -3,6 +3,7 @@
 namespace App\Packages\Exam\Model;
 
 use App\Packages\Student\Model\Student;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Illuminate\Support\Str;
@@ -52,9 +53,14 @@ class Exam
     /**
      * @ORM\Column(type="float", nullable=true)
      */
-    protected float $grade;
+    protected null|float $grade;
 
-    public function __construct(int $questionsAmount, string $status, Subject $subject, \DateTime $startTime, Student $student, float $grade)
+    /**
+     * @ORM\OneToMany(targetEntity="QuestionRegister", mappedBy="exam", cascade={"all"}, orphanRemoval=true)
+     */
+    protected Collection $questions;
+
+    public function __construct(int $questionsAmount, string $status, Subject $subject, \DateTime $startTime, Student $student, null|float $grade = null)
     {
         $this->id = Str::uuid()->toString();
         $this->questionsAmount = $questionsAmount;
@@ -63,6 +69,7 @@ class Exam
         $this->startTime = $startTime;
         $this->student = $student;
         $this->grade = $grade;
+        $this->questions = new ArrayCollection();
     }
 
     /**
@@ -135,5 +142,18 @@ class Exam
     public function getAnswers(): ArrayCollection|Collection
     {
         return $this->answers;
+    }
+
+    /**
+     * @return ArrayCollection|Collection
+     */
+    public function getQuestions(): ArrayCollection|Collection
+    {
+        return $this->questions;
+    }
+
+    public function addQuestion(QuestionRegister $questionRegister): void
+    {
+        $this->questions->add($questionRegister);
     }
 }

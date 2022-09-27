@@ -12,7 +12,6 @@ class OptionRepository extends AbstractRepository
 
     public function addOption(Option $option)
     {
-        dump($option);
         EntityManager::persist($option);
     }
 }

@@ -42,7 +42,6 @@ class Question
         $this->options = new ArrayCollection();
     }
 
-
     /**
      * @return string
      */
@@ -65,5 +64,10 @@ class Question
     public function getOptions(): ArrayCollection|Collection
     {
         return $this->options;
+    }
+
+    public function addOption(Option $option): void
+    {
+        $this->options->add($option);
     }
 }

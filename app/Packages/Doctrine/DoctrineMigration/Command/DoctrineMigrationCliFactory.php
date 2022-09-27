@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Packages\DoctrineMigration\Command;
+namespace App\Packages\Doctrine\DoctrineMigration\Command;
 
 use Doctrine\Migrations\Configuration\Configuration;
 use Doctrine\Migrations\Configuration\EntityManager\ExistingEntityManager;

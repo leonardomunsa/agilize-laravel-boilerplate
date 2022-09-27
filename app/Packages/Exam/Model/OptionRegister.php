@@ -3,7 +3,12 @@
 namespace App\Packages\Exam\Model;
 
 use Illuminate\Support\Str;
+use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="option_register")
+ */
 class OptionRegister
 {
     /**
@@ -33,7 +38,7 @@ class OptionRegister
      */
     protected Question $question;
 
-    public function __construct(string $content, bool $correct, bool $picked, Question $question)
+    public function __construct(string $content, bool $correct, Question $question, bool $picked = false)
     {
         $this->id = Str::uuid()->toString();
         $this->content = $content;

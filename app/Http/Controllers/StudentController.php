@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Packages\Student\Controller;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Packages\Student\Facade\StudentFacade;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use LaravelDoctrine\ORM\Facades\EntityManager;
 
 class StudentController extends Controller
 {

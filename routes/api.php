@@ -1,9 +1,10 @@
 <?php
 
-use App\Packages\Exam\Controller\OptionController;
-use App\Packages\Exam\Controller\SubjectController;
-use App\Packages\Student\Controller\StudentController;
-use App\Packages\Exam\Controller\QuestionController;
+use App\Http\Controllers\ExamController;
+use App\Http\Controllers\OptionController;
+use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\StudentController;
+use App\Http\Controllers\SubjectController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -29,3 +30,6 @@ Route::post('/subject', [SubjectController::class, 'store']);
 Route::post('/question', [QuestionController::class, 'store']);
 
 Route::post('/question/{id}/option', [OptionController::class, 'store']);
+
+Route::post('/student/{id}/exam', [ExamController::class, 'store']);
+

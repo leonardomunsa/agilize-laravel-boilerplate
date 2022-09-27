@@ -2,6 +2,8 @@
 
 namespace App\Packages\Exam\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Illuminate\Support\Str;
 
@@ -28,13 +30,18 @@ class QuestionRegister
      */
     protected string $content;
 
+    /**
+     * @ORM\OneToMany(targetEntity="OptionRegister", mappedBy="question", cascade={"all"}, orphanRemoval=true)
+     */
+    protected Collection $options;
+
     public function __construct(string $content, Exam $exam)
     {
         $this->id = Str::uuid()->toString();
         $this->content = $content;
         $this->exam = $exam;
+        $this->options = new ArrayCollection();
     }
-
 
     /**
      * @return string
@@ -43,7 +50,6 @@ class QuestionRegister
     {
         return $this->id;
     }
-
 
     /**
      * @return Exam
@@ -59,5 +65,18 @@ class QuestionRegister
     public function getContent(): string
     {
         return $this->content;
+    }
+
+    /**
+     * @return ArrayCollection|Collection
+     */
+    public function getOptions(): ArrayCollection|Collection
+    {
+        return $this->options;
+    }
+
+    public function addOption(OptionRegister $optionRegister): void
+    {
+        $this->options->add($optionRegister);
     }
 }

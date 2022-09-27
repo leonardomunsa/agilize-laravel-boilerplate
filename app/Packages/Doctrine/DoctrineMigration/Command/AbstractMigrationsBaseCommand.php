@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Packages\DoctrineMigration\Command;
+namespace App\Packages\Doctrine\DoctrineMigration\Command;
 
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\StringInput;

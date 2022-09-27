@@ -30,4 +30,9 @@ class StudentService
     {
         return strlen($name) < self::MIN_LENGTH_NAME;
     }
+
+    public function getStudent(string $studentId): Student
+    {
+        return $this->studentRepository->findStudentById($studentId);
+    }
 }
