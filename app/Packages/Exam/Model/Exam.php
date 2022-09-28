@@ -14,6 +14,8 @@ use Illuminate\Support\Str;
  */
 class Exam
 {
+    const BASE_GRADE = 10;
+
     /**
      * @ORM\Id
      * @ORM\Column(type="uuid", unique=true)
@@ -131,17 +133,11 @@ class Exam
     /**
      * @return float
      */
-    public function getGrade(): float
+    public function getGrade($numberOfRightAnswers): float
     {
+        $valueForQuestion = self::BASE_GRADE / $this->questionsAmount;
+        $this->grade = round($valueForQuestion * $numberOfRightAnswers, 2);
         return $this->grade;
-    }
-
-    /**
-     * @return ArrayCollection|Collection
-     */
-    public function getAnswers(): ArrayCollection|Collection
-    {
-        return $this->answers;
     }
 
     /**

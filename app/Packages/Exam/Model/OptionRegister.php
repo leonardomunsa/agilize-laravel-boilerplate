@@ -34,17 +34,17 @@ class OptionRegister
     protected bool $picked;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Question")
+     * @ORM\ManyToOne(targetEntity="QuestionRegister")
      */
-    protected Question $question;
+    protected QuestionRegister $question;
 
-    public function __construct(string $content, bool $correct, Question $question, bool $picked = false)
+    public function __construct(string $content, bool $correct, QuestionRegister $question, bool $picked = false)
     {
         $this->id = Str::uuid()->toString();
         $this->content = $content;
         $this->correct = $correct;
-        $this->picked = $picked;
         $this->question = $question;
+        $this->picked = $picked;
     }
 
     /**
@@ -72,14 +72,6 @@ class OptionRegister
     }
 
     /**
-     * @return Question
-     */
-    public function getQuestion(): Question
-    {
-        return $this->question;
-    }
-
-    /**
      * @return bool
      */
     public function isCorrect(): bool
@@ -87,5 +79,9 @@ class OptionRegister
         return $this->correct;
     }
 
+    public function pickedOptionToTrue(): void
+    {
+        $this->picked = true;
+    }
 
 }

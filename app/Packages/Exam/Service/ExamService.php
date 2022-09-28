@@ -9,6 +9,7 @@ use App\Packages\Exam\Model\Question;
 use App\Packages\Exam\Model\QuestionRegister;
 use App\Packages\Exam\Model\Subject;
 use App\Packages\Exam\Repository\ExamRepository;
+use App\Packages\Exam\Repository\OptionRegisterRepository;
 use App\Packages\Exam\Repository\QuestionRepository;
 use App\Packages\Exam\Repository\SubjectRepository;
 use App\Packages\Student\Facade\StudentFacade;
@@ -21,7 +22,8 @@ class ExamService
     public function __construct(
         protected ExamRepository $examRepository,
         protected SubjectRepository $subjectRepository,
-        protected QuestionRepository $questionRepository
+        protected QuestionRepository $questionRepository,
+        protected OptionRegisterRepository $optionRegisterRepository
     )
     {
     }
@@ -35,6 +37,15 @@ class ExamService
         $this->examRepository->startExam($exam);
         $this->createQuestionsSnapshot($exam, $amountOfQuestions, $subject);
         return $exam;
+    }
+
+    public function finishExam(string $examId, array $answers): string
+    {
+        /** @var Exam $exam */
+        $this->updatePickedOptions($answers);
+        $exam = $this->examRepository->findOneBy(['id' => $examId]);
+        $numberOfRightAnswers = $this->examRepository->getNumberOfRightAnswers($exam)[0][1];
+        return $exam->getGrade($numberOfRightAnswers);
     }
 
     public function getAmountOfQuestions(): int
@@ -55,16 +66,35 @@ class ExamService
         }
     }
 
-    public function createOptionsSnapshot($question, $questionSnapshot)
+    public function createOptionsSnapshot($question, $questionSnapshot): void
     {
         /** @var Question $question */
         $options = $question->getOptions();
         /** @var Option $option */
         /** @var QuestionRegister $questionSnapshot */
         foreach ($options as $option) {
-            $optionSnapshot = new OptionRegister($option->getContent(), $option->isCorrect(), $question);
+            $optionSnapshot = new OptionRegister($option->getContent(), $option->isCorrect(), $questionSnapshot);
             $this->examRepository->createOptionsRegister($optionSnapshot);
             $questionSnapshot->addOption($optionSnapshot);
         }
     }
+
+    private function updatePickedOptions(array $answers): void
+    {
+        foreach ($answers as $answer) {
+            $this->examRepository->updatePickedOptions($answer['option']);
+//            $optionRegister = $this->optionRegisterRepository->findOptionById($answer['option']);
+//            $optionRegister->pickedOptionToTrue();
+//            $this->examRepository->updatePickedOption($optionRegister);
+        }
+    }
+
+//    private function validateGrade(array $answers)
+//    {
+//        foreach ($answers as $answer) {
+//            $optionRegister = $this->optionRegisterRepository->findOptionById($answer['option']);
+//            $optionRegister->pickedOptionToTrue();
+//            $this->examRepository->updatePickedOption($optionRegister);
+//        }
+//    }
 }

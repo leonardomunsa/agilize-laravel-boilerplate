@@ -40,4 +40,9 @@ class ExamFacade
     {
         return $this->examService->startExam($student, $subjectName);
     }
+
+    public function finishExam(string $examId, array $answers)
+    {
+        return $this->examService->finishExam($examId, $answers);
+    }
 }
