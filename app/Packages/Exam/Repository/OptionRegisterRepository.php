@@ -9,9 +9,4 @@ use LaravelDoctrine\ORM\Facades\EntityManager;
 class OptionRegisterRepository extends AbstractRepository
 {
     public string $entityName = OptionRegister::class;
-
-    public function findOptionById(string $optionId)
-    {
-        return $this->findOneBy(['id' => $optionId]);
-    }
 }

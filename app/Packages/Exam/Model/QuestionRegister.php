@@ -25,13 +25,12 @@ class QuestionRegister
     protected Exam $exam;
 
     /**
-     * @ORM\Id
      * @ORM\Column(type="string")
      */
     protected string $content;
 
     /**
-     * @ORM\OneToMany(targetEntity="OptionRegister", mappedBy="question", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="OptionRegister", mappedBy="questionRegister", cascade={"all"}, orphanRemoval=true)
      */
     protected Collection $options;
 

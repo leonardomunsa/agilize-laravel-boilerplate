@@ -3,6 +3,7 @@
 namespace App\Packages\Exam\Model;
 
 use App\Packages\Student\Model\Student;
+use Carbon\Carbon;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -62,13 +63,13 @@ class Exam
      */
     protected Collection $questions;
 
-    public function __construct(int $questionsAmount, string $status, Subject $subject, \DateTime $startTime, Student $student, null|float $grade = null)
+    public function __construct(int $questionsAmount, string $status, Subject $subject, Student $student, null|float $grade = null)
     {
         $this->id = Str::uuid()->toString();
         $this->questionsAmount = $questionsAmount;
         $this->status = $status;
         $this->subject = $subject;
-        $this->startTime = $startTime;
+        $this->startTime = Carbon::now();
         $this->student = $student;
         $this->grade = $grade;
         $this->questions = new ArrayCollection();
@@ -117,7 +118,7 @@ class Exam
     /**
      * @return \DateTime
      */
-    public function getEndTime(): \DateTime
+    public function getEndTime(): \DateTime|Carbon
     {
         return $this->endTime;
     }
@@ -151,5 +152,15 @@ class Exam
     public function addQuestion(QuestionRegister $questionRegister): void
     {
         $this->questions->add($questionRegister);
+    }
+
+    public function closeStatus(): void
+    {
+        $this->status = 'closed';
+    }
+
+    public function endTime(): void
+    {
+        $this->endTime = Carbon::now();
     }
 }

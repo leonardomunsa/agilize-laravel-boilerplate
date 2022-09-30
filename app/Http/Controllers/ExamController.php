@@ -30,7 +30,11 @@ class ExamController extends Controller
         try {
             $examId = $request->route('id');
             $answers = $request->get('answers');
-            $response = $this->examFacade->finishExam($examId, $answers);
+            $exam = $this->examFacade->getExam($examId);
+            $response = [
+                'grade' => $this->examFacade->finishExam($exam, $answers),
+                'questions' => $this->getQuestionsFromExam($exam)
+            ];
 
             return response()->json($response);
         } catch (Exception $exception) {
@@ -49,7 +53,6 @@ class ExamController extends Controller
 
             $student = $this->studentFacade->getStudent($studentId);
             $exam = $this->examFacade->startExam($student, $subjectName);
-            $questionsWithOptions = $this->getQuestionsWithOptions($exam);
 
             $response = [
                 'name' => $student->getName(),
@@ -57,7 +60,7 @@ class ExamController extends Controller
                 'questions_amount' => $exam->getQuestionsAmount(),
                 'start_time' => $exam->getStartTime()->format('h:i:s'),
                 'finish_until' => $exam->getStartTime()->addHour()->format('h:i:s'),
-                'questions' => $questionsWithOptions
+                'questions' => $this->getQuestionsWithOptions($exam)
             ];
             EntityManager::flush();
             return response()->json($response);
@@ -66,8 +69,8 @@ class ExamController extends Controller
         }
     }
 
-    private function getQuestionsWithOptions($exam) {
-        /** @var Exam $exam */
+    private function getQuestionsWithOptions(Exam $exam)
+    {
         $questions = $exam->getQuestions();
         $examCollection = collect();
         /** @var QuestionRegister $question */
@@ -80,6 +83,27 @@ class ExamController extends Controller
                         return [
                             'option_id' => $option->getId(),
                             'content' => $option->getContent()
+                        ];
+                    }, $question->getOptions()->toArray())
+            ]);
+        }
+        return $examCollection;
+    }
+
+    private function getQuestionsFromExam(Exam $exam)
+    {
+        $questions = $exam->getQuestions();
+        $examCollection = collect();
+        /** @var QuestionRegister $question */
+        foreach ($questions as $question) {
+            $examCollection->add([
+                'content' => $question->getContent(),
+                'options' =>
+                    array_map(function ($option) {
+                        return [
+                            'content' => $option->getContent(),
+                            'picked' => $option->isPicked(),
+                            'correct' => $option->isCorrect()
                         ];
                     }, $question->getOptions()->toArray())
             ]);

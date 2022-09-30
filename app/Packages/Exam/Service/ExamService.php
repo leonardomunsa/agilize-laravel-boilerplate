@@ -16,6 +16,7 @@ use App\Packages\Student\Facade\StudentFacade;
 use App\Packages\Student\Model\Student;
 use Carbon\Carbon;
 use Doctrine\ORM\NonUniqueResultException;
+use Exception;
 
 class ExamService
 {
@@ -28,23 +29,31 @@ class ExamService
     {
     }
 
-    public function startExam(Student $student, string $subjectName)
+    public function startExam(Student $student, string $subjectName): Exam
     {
-        $startTimeOfExam = Carbon::now()->timezone('America/Bahia');
         $subject = $this->subjectRepository->findSubjectByName($subjectName);
         $amountOfQuestions = $this->getAmountOfQuestions();
-        $exam = new Exam($amountOfQuestions, 'open', $subject, $startTimeOfExam, $student);
+        $exam = new Exam($amountOfQuestions, 'open', $subject, $student);
         $this->examRepository->startExam($exam);
         $this->createQuestionsSnapshot($exam, $amountOfQuestions, $subject);
         return $exam;
     }
 
-    public function finishExam(string $examId, array $answers): string
+    /**
+     * @throws Exception
+     */
+    public function finishExam(Exam $exam, array $answers): float
     {
-        /** @var Exam $exam */
         $this->updatePickedOptions($answers);
-        $exam = $this->examRepository->findOneBy(['id' => $examId]);
         $numberOfRightAnswers = $this->examRepository->getNumberOfRightAnswers($exam)[0][1];
+        $exam->closeStatus();
+        $exam->endTime();
+        $this->examRepository->updateExam($exam);
+
+        if ($exam->getEndTime()->diffInRealSeconds($exam->getStartTime()) > 3600) {
+            throw new Exception('The time limit for submitting the exam has expired', 1664485702);
+        }
+
         return $exam->getGrade($numberOfRightAnswers);
     }
 
@@ -79,22 +88,15 @@ class ExamService
         }
     }
 
+    public function getExam($examId)
+    {
+        return $this->examRepository->findExamById($examId);
+    }
+
     private function updatePickedOptions(array $answers): void
     {
         foreach ($answers as $answer) {
             $this->examRepository->updatePickedOptions($answer['option']);
-//            $optionRegister = $this->optionRegisterRepository->findOptionById($answer['option']);
-//            $optionRegister->pickedOptionToTrue();
-//            $this->examRepository->updatePickedOption($optionRegister);
         }
     }
-
-//    private function validateGrade(array $answers)
-//    {
-//        foreach ($answers as $answer) {
-//            $optionRegister = $this->optionRegisterRepository->findOptionById($answer['option']);
-//            $optionRegister->pickedOptionToTrue();
-//            $this->examRepository->updatePickedOption($optionRegister);
-//        }
-//    }
 }

@@ -28,6 +28,17 @@ class ExamRepository extends AbstractRepository
         EntityManager::persist($optionRegister);
     }
 
+    public function updateExam(Exam $exam)
+    {
+        EntityManager::merge($exam);
+        EntityManager::flush();
+    }
+
+    public function findExamById(string $examId)
+    {
+        return $this->findOneBy(['id' => $examId]);
+    }
+
     public function updatePickedOptions(string $optionId)
     {
         $entityManager = $this->getEntityManager();
@@ -49,7 +60,7 @@ class ExamRepository extends AbstractRepository
         return $queryBuilder
             ->select('count(q.id)')
             ->from(QuestionRegister::class, 'q')
-            ->join(OptionRegister::class, 'o', Join::WITH, 'q.id = o.question')
+            ->join(OptionRegister::class, 'o', Join::WITH, 'q.id = o.questionRegister')
             ->where('q.exam = :examId')
             ->andWhere('o.correct = :boolean')
             ->andWhere('o.picked = :boolean')
