@@ -23,7 +23,7 @@ class OptionController
     {
         try {
             $options = $request->get('options');
-            $questionId = $request->header('id');
+            $questionId = $request->route('id');
             $response = $this->examFacade->enrollOptions($options, $questionId);
 
             EntityManager::flush();
