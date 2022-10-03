@@ -16,7 +16,7 @@ use LaravelDoctrine\ORM\Facades\EntityManager;
 class ExamController extends Controller
 {
     public function __construct(
-        protected ExamFacade $subjectFacade,
+        protected ExamFacade $examFacade,
         protected StudentFacade $studentFacade
     )
     {
@@ -25,23 +25,42 @@ class ExamController extends Controller
     /**
      * @throws Exception
      */
+    public function update(Request $request): JsonResponse
+    {
+        try {
+            $examId = $request->route('id');
+            $answers = $request->get('answers');
+            $exam = $this->examFacade->getExam($examId);
+            $response = [
+                'grade' => $this->examFacade->finishExam($exam, $answers),
+                'questions' => $this->getQuestionsFromExam($exam)
+            ];
+
+            return response()->json($response);
+        } catch (Exception $exception) {
+            throw new Exception($exception->getMessage(), 1664314822);
+        }
+    }
+
+    /**
+     * @throws Exception
+     */
     public function store(Request $request): JsonResponse
     {
         try {
-            $studentId = $request->header('id');
+            $studentId = $request->route('id');
             $subjectName = $request->get('subject');
 
             $student = $this->studentFacade->getStudent($studentId);
-            $exam = $this->subjectFacade->startExam($student, $subjectName);
-            $questionsWithOptions = $this->getQuestionsWithOptions($exam);
+            $exam = $this->examFacade->startExam($student, $subjectName);
 
             $response = [
                 'name' => $student->getName(),
                 'subject' => $subjectName,
                 'questions_amount' => $exam->getQuestionsAmount(),
-                'start_time' => Carbon::now()->timezone('America/Bahia')->format('h:i:s'),
-                'finish_until' => Carbon::now()->addHour()->timezone('America/Bahia')->format('h:i:s'),
-                'questions' => $questionsWithOptions
+                'start_time' => $exam->getStartTime()->format('h:i:s'),
+                'finish_until' => $exam->getStartTime()->addHour()->format('h:i:s'),
+                'questions' => $this->getQuestionsWithOptions($exam)
             ];
             EntityManager::flush();
             return response()->json($response);
@@ -50,8 +69,8 @@ class ExamController extends Controller
         }
     }
 
-    private function getQuestionsWithOptions($exam) {
-        /** @var Exam $exam */
+    private function getQuestionsWithOptions(Exam $exam)
+    {
         $questions = $exam->getQuestions();
         $examCollection = collect();
         /** @var QuestionRegister $question */
@@ -64,6 +83,27 @@ class ExamController extends Controller
                         return [
                             'option_id' => $option->getId(),
                             'content' => $option->getContent()
+                        ];
+                    }, $question->getOptions()->toArray())
+            ]);
+        }
+        return $examCollection;
+    }
+
+    private function getQuestionsFromExam(Exam $exam)
+    {
+        $questions = $exam->getQuestions();
+        $examCollection = collect();
+        /** @var QuestionRegister $question */
+        foreach ($questions as $question) {
+            $examCollection->add([
+                'content' => $question->getContent(),
+                'options' =>
+                    array_map(function ($option) {
+                        return [
+                            'content' => $option->getContent(),
+                            'picked' => $option->isPicked(),
+                            'correct' => $option->isCorrect()
                         ];
                     }, $question->getOptions()->toArray())
             ]);

@@ -32,4 +32,5 @@ Route::post('/question', [QuestionController::class, 'store']);
 Route::post('/question/{id}/option', [OptionController::class, 'store']);
 
 Route::post('/student/{id}/exam', [ExamController::class, 'store']);
+Route::put('/exam/{id}/finish', [ExamController::class, 'update']);
 

@@ -2,6 +2,7 @@
 
 namespace App\Packages\Exam\Facade;
 
+use App\Packages\Exam\Model\Exam;
 use App\Packages\Exam\Model\Question;
 use App\Packages\Exam\Service\ExamService;
 use App\Packages\Exam\Service\OptionService;
@@ -39,5 +40,15 @@ class ExamFacade
     public function startExam(Student $student, string $subjectName)
     {
         return $this->examService->startExam($student, $subjectName);
+    }
+
+    public function finishExam(Exam $exam, array $answers)
+    {
+        return $this->examService->finishExam($exam, $answers);
+    }
+
+    public function getExam(string $examId)
+    {
+        return $this->examService->getExam($examId);
     }
 }
