@@ -4,6 +4,7 @@ namespace App\Packages\Student\Facade;
 
 use App\Packages\Student\Model\Student;
 use App\Packages\Student\Service\StudentService;
+use Exception;
 
 class StudentFacade
 {
@@ -13,6 +14,9 @@ class StudentFacade
     {
     }
 
+    /**
+     * @throws Exception
+     */
     public function enrollStudent(string $name): string
     {
         return $this->studentService->enrollStudent($name);
