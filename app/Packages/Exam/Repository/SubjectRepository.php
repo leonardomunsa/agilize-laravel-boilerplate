@@ -15,8 +15,8 @@ class SubjectRepository extends AbstractRepository
         EntityManager::persist($subject);
     }
 
-    public function findSubjectByName(string $name): ?Subject
+    public function findSubjectById(string $id): ?Subject
     {
-        return $this->findOneBy(['name' => $name]);
+        return $this->findOneBy(['id' => $id]);
     }
 }

@@ -29,9 +29,9 @@ class ExamService
     {
     }
 
-    public function startExam(Student $student, string $subjectName): Exam
+    public function startExam(Student $student, string $subjectId): Exam
     {
-        $subject = $this->subjectRepository->findSubjectByName($subjectName);
+        $subject = $this->subjectRepository->findSubjectById($subjectId);
         $amountOfQuestions = $this->getAmountOfQuestions();
         $exam = new Exam($amountOfQuestions, 'open', $subject, $student);
         $this->examRepository->startExam($exam);

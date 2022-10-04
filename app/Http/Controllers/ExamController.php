@@ -50,9 +50,11 @@ class ExamController extends Controller
         try {
             $studentId = $request->route('id');
             $subjectName = $request->get('subject');
+            $subjectId = $request->get('subjectId');
 
             $student = $this->studentFacade->getStudent($studentId);
-            $exam = $this->examFacade->startExam($student, $subjectName);
+            $exam = $this->examFacade->startExam($student, $subjectId);
+            EntityManager::flush();
 
             $response = [
                 'name' => $student->getName(),
@@ -62,14 +64,13 @@ class ExamController extends Controller
                 'finish_until' => $exam->getStartTime()->addHour()->format('h:i:s'),
                 'questions' => $this->getQuestionsWithOptions($exam)
             ];
-            EntityManager::flush();
             return response()->json($response);
         } catch (Exception $exception) {
             throw new Exception($exception->getMessage(), 1663106115);
         }
     }
 
-    private function getQuestionsWithOptions(Exam $exam)
+    private function getQuestionsWithOptions(Exam $exam): \Illuminate\Support\Collection
     {
         $questions = $exam->getQuestions();
         $examCollection = collect();
@@ -90,7 +91,7 @@ class ExamController extends Controller
         return $examCollection;
     }
 
-    private function getQuestionsFromExam(Exam $exam)
+    private function getQuestionsFromExam(Exam $exam): \Illuminate\Support\Collection
     {
         $questions = $exam->getQuestions();
         $examCollection = collect();
