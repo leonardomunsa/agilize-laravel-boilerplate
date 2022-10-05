@@ -5,6 +5,7 @@ namespace App\Packages\Exam\Service;
 use App\Packages\Exam\Model\Question;
 use App\Packages\Exam\Repository\QuestionRepository;
 use App\Packages\Exam\Repository\SubjectRepository;
+use Exception;
 
 class QuestionService
 {
@@ -17,18 +18,21 @@ class QuestionService
     {
     }
 
-    public function enrollQuestion(string $content, string $subject): string
+    /**
+     * @throws Exception
+     */
+    public function enrollQuestion(string $content, string $subjectId): string
     {
         if (!$this->checkIfQuestionIsEmpty($content)) {
-            $subject = $this->subjectRepository->findSubjectByName($subject);
+            $subject = $this->subjectRepository->findSubjectById($subjectId);
             $question = new Question($content, $subject);
             $this->questionRepository->addQuestion($question);
             return 'Question registered!';
         }
-        return 'Please submit a real question';
+        throw new Exception('Please submit a real question', 1664994335);
     }
 
-    public function checkIfQuestionIsEmpty(string $content): bool
+    private function checkIfQuestionIsEmpty(string $content): bool
     {
         return $content < self::MIN_LENGTH_QUESTION;
     }

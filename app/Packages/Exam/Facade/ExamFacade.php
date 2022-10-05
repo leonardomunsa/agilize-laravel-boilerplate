@@ -28,9 +28,12 @@ class ExamFacade
         return $this->subjectService->enrollSubject($name);
     }
 
-    public function enrollQuestion(string $content, string $subject): string
+    /**
+     * @throws Exception
+     */
+    public function enrollQuestion(string $content, string $subjectId): string
     {
-        return $this->questionService->enrollQuestion($content, $subject);
+        return $this->questionService->enrollQuestion($content, $subjectId);
     }
 
     public function enrollOptions(array $options, string $questionId): string

@@ -23,9 +23,9 @@ class QuestionController
     {
         try {
             $questionContent = $request->get('content');
-            $subject = $request->get('subject');
+            $subjectId = $request->get('subject');
 
-            $response = $this->subjectFacade->enrollQuestion($questionContent, $subject);
+            $response = $this->subjectFacade->enrollQuestion($questionContent, $subjectId);
             EntityManager::flush();
             return response()->json($response);
         } catch (Exception $exception) {
