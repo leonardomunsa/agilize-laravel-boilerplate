@@ -23,10 +23,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('/student', [StudentController::class, 'list']);
 Route::post('/student', [StudentController::class, 'store']);
 
+Route::get('/subject', [SubjectController::class, 'list']);
 Route::post('/subject', [SubjectController::class, 'store']);
 
+Route::get('/question', [QuestionController::class, 'list']);
 Route::post('/question', [QuestionController::class, 'store']);
 
 Route::post('/question/{id}/option', [OptionController::class, 'store']);

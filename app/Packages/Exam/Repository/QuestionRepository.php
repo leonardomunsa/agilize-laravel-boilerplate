@@ -24,6 +24,11 @@ class QuestionRepository extends AbstractRepository
         return $this->findOneBy(['id' => $questionId]);
     }
 
+    public function findAllQuestions(): array
+    {
+        return $this->findAll();
+    }
+
     public function getAmountOfQuestions($limit, $subject)
     {
         $entityManager = $this->getEntityManager();

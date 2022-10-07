@@ -25,7 +25,7 @@ class Question
     protected string $content;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Subject")
+     * @ORM\ManyToOne(targetEntity="Subject", cascade={"persist"})
      */
     protected Subject $subject;
 

@@ -28,6 +28,11 @@ class ExamFacade
         return $this->subjectService->enrollSubject($name);
     }
 
+    public function getSubjects(): array
+    {
+        return $this->subjectService->getSubjects();
+    }
+
     /**
      * @throws Exception
      */
@@ -36,6 +41,14 @@ class ExamFacade
         return $this->questionService->enrollQuestion($content, $subjectId);
     }
 
+    public function getQuestions(): array
+    {
+        return $this->questionService->getQuestions();
+    }
+
+    /**
+     * @throws Exception
+     */
     public function enrollOptions(array $options, string $questionId): string
     {
         return $this->optionService->enrollOptions($options, $questionId);

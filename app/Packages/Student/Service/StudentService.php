@@ -5,6 +5,7 @@ namespace App\Packages\Student\Service;
 use App\Packages\Student\Model\Student;
 use App\Packages\Student\Repository\StudentRepository;
 use Exception;
+use Illuminate\Support\Collection;
 use LaravelDoctrine\ORM\Facades\EntityManager;
 
 class StudentService
@@ -38,5 +39,10 @@ class StudentService
     public function getStudent(string $studentId): Student
     {
         return $this->studentRepository->findStudentById($studentId);
+    }
+
+    public function getStudents(): array
+    {
+        return $this->studentRepository->findAllStudents();
     }
 }

@@ -24,7 +24,6 @@ class ExamService
         protected ExamRepository $examRepository,
         protected SubjectRepository $subjectRepository,
         protected QuestionRepository $questionRepository,
-        protected OptionRegisterRepository $optionRegisterRepository
     )
     {
     }
@@ -57,13 +56,12 @@ class ExamService
         return $exam->getGrade($numberOfRightAnswers);
     }
 
-    public function getAmountOfQuestions(): int
+    private function getAmountOfQuestions(): int
     {
         return rand(10, 40);
     }
 
-
-    public function createQuestionsSnapshot(Exam $exam, int $amountOfQuestions, Subject $subject): void
+    private function createQuestionsSnapshot(Exam $exam, int $amountOfQuestions, Subject $subject): void
     {
         $questions = $this->questionRepository->getAmountOfQuestions($amountOfQuestions, $subject);
         /** @var Question $question */
@@ -75,7 +73,7 @@ class ExamService
         }
     }
 
-    public function createOptionsSnapshot($question, $questionSnapshot): void
+    private function createOptionsSnapshot($question, $questionSnapshot): void
     {
         /** @var Question $question */
         $options = $question->getOptions();

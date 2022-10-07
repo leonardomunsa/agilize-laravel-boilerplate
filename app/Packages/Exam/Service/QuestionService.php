@@ -23,17 +23,22 @@ class QuestionService
      */
     public function enrollQuestion(string $content, string $subjectId): string
     {
-        if (!$this->checkIfQuestionIsEmpty($content)) {
-            $subject = $this->subjectRepository->findSubjectById($subjectId);
-            $question = new Question($content, $subject);
-            $this->questionRepository->addQuestion($question);
-            return 'Question registered!';
+        if ($this->checkIfQuestionIsTooShort($content)) {
+            throw new Exception('The question should have at least ten characters', 1664994335);
         }
-        throw new Exception('Please submit a real question', 1664994335);
+        $subject = $this->subjectRepository->findSubjectById($subjectId);
+        $question = new Question($content, $subject);
+        $this->questionRepository->addQuestion($question);
+        return 'Question registered!';
     }
 
-    private function checkIfQuestionIsEmpty(string $content): bool
+    private function checkIfQuestionIsTooShort(string $content): bool
     {
-        return $content < self::MIN_LENGTH_QUESTION;
+        return strlen($content) < self::MIN_LENGTH_QUESTION;
+    }
+
+    public function getQuestions(): array
+    {
+        return $this->questionRepository->findAllQuestions();
     }
 }

@@ -20,4 +20,9 @@ class StudentRepository extends AbstractRepository
     {
         return $this->findOneBy(['id' => $studentId]);
     }
+
+    public function findAllStudents(): array
+    {
+        return $this->findAll();
+    }
 }

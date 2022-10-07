@@ -1,0 +1,224 @@
+{
+  "questions": [
+    {
+      "content": "Quanto é 1+1?",
+      "subject": "Matemática",
+      "options": [
+        {
+          "content": "2",
+          "correct": true
+        },
+        {
+          "content": "1",
+          "correct": false
+        },
+        {
+          "content": "0",
+          "correct": false
+        },
+        {
+          "content": "10",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "content": "Quanto é 8x7?",
+      "subject": "Matemática",
+      "options": [
+        {
+          "content": "48",
+          "correct": false
+        },
+        {
+          "content": "100",
+          "correct": false
+        },
+        {
+          "content": "56",
+          "correct": true
+        },
+        {
+          "content": "64",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "content": "Quanto é 45÷9?",
+      "subject": "Matemática",
+      "options": [
+        {
+          "content": "9",
+          "correct": false
+        },
+        {
+          "content": "8",
+          "correct": false
+        },
+        {
+          "content": "6",
+          "correct": false
+        },
+        {
+          "content": "5",
+          "correct": true
+        }
+      ]
+    },
+    {
+      "content": "Qual a raiz quadrada de 121?",
+      "subject": "Matemática",
+      "options": [
+        {
+          "content": "11",
+          "correct": true
+        },
+        {
+          "content": "12",
+          "correct": false
+        },
+        {
+          "content": "14",
+          "correct": false
+        },
+        {
+          "content": "13",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "content": "O que são números primos?",
+      "subject": "Matemática",
+      "options": [
+        {
+          "content": "Números que dividem todos seus anteriores",
+          "correct": false
+        },
+        {
+          "content": "Números divisíveis por todos os seus sucessores",
+          "correct": false
+        },
+        {
+          "content": "Números que possuem apenas dois divisores: 1 e eles mesmos",
+          "correct": true
+        },
+        {
+          "content": "Números que possuem apenas um divisor: eles mesmos",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "content": "Quanto é 100-99?",
+      "subject": "Matemática",
+      "options": [
+        {
+          "content": "0",
+          "correct": false
+        },
+        {
+          "content": "1",
+          "correct": true
+        },
+        {
+          "content": "2",
+          "correct": false
+        },
+        {
+          "content": "Nenhuma das alternativas",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "content": "Marque a opção que possua apenas números naturais",
+      "subject": "Matemática",
+      "options": [
+        {
+          "content": "-1, 100, 56, 0",
+          "correct": false
+        },
+        {
+          "content": "-15, 1.5, 5, 12, 1000000",
+          "correct": false
+        },
+        {
+          "content": "0, 2, 159, 120000, 768, 40",
+          "correct": true
+        },
+        {
+          "content": "10.46, 21, 3",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "content": "Quanto é 12/0?",
+      "subject": "Matemática",
+      "options": [
+        {
+          "content": "12",
+          "correct": false
+        },
+        {
+          "content": "Não é possível dividir por 0",
+          "correct": true
+        },
+        {
+          "content": "0",
+          "correct": false
+        },
+        {
+          "content": "Infinito",
+          "correct": false
+        }
+      ]
+    },
+    {
+      "content": "Qual a fórmula do Teorema de Pitágoras?",
+      "subject": "Matemática",
+      "options": [
+        {
+          "content": "a² = (b+c)²",
+          "correct": false
+        },
+        {
+          "content": "c = a² + b²",
+          "correct": false
+        },
+        {
+          "content": "a² = b² - c²",
+          "correct": false
+        },
+        {
+          "content": "a² = b² + c²",
+          "correct": true
+        }
+      ]
+    },
+    {
+      "content": "Quantas vezes 2 cabe em 64?",
+      "subject": "Matemática",
+      "options": [
+        {
+          "content": "32",
+          "correct": true
+        },
+        {
+          "content": "64",
+          "correct": false
+        },
+        {
+          "content": "24",
+          "correct": false
+        },
+        {
+          "content": "12",
+          "correct": false
+        }
+      ]
+    }
+  ]
+}

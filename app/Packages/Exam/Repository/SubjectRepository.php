@@ -19,4 +19,9 @@ class SubjectRepository extends AbstractRepository
     {
         return $this->findOneBy(['id' => $subjectId]);
     }
+
+    public function findAllSubjects(): array
+    {
+        return $this->findAll();
+    }
 }

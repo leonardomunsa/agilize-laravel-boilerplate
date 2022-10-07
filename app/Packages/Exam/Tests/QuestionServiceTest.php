@@ -38,7 +38,7 @@ class QuestionServiceTest extends TestCase
         $subjectRepositoryMock->method('findSubjectById')->willReturn($subject);
         $this->app->bind(SubjectRepository::class, fn() => $subjectRepositoryMock);
 
-        $this->expectExceptionMessage('Please submit a real question');
+        $this->expectExceptionMessage('The question should have at least ten characters');
 
         /** @var QuestionService $questionService */
         $questionService = app(QuestionService::class);

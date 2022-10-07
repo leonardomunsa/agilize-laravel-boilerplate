@@ -14,7 +14,7 @@ class StudentFacadeTest extends TestCase
     /**
      * @throws Exception
      */
-    public function testIfEnrollStudentReturnsStringExpected()
+    public function testEnrollStudentShouldReturnStringExpected()
     {
         $studentServiceMock = $this->createMock(StudentService::class);
         $expected = 'Student Flávio registered!';
@@ -27,7 +27,7 @@ class StudentFacadeTest extends TestCase
         $this->assertSame($expected, $result);
     }
 
-    #[NoReturn] public function testItShouldReturnAnInstanceOfStudent()
+    #[NoReturn] public function testGetStudentShouldReturnTheStudentObject()
     {
         $student = new Student('João');
         $studentServiceMock = $this->createMock(StudentService::class);

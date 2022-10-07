@@ -25,15 +25,18 @@ class OptionService
     public function enrollOptions(array $options, string $questionId): string
     {
         $question = $this->questionRepository->findQuestionById($questionId);
-        if ((!($this->checkIfOptionsAreEmptyOrThereMoreThanOneCorrect($options)) && !($this->checkIfAtLeastTwoOptionsAreEqual($options)))) {
-            foreach ($options as $option) {
-                $newOption = new Option($option['content'], $option['correct'], $question);
-                $this->optionRepository->addOption($newOption);
-                $question->addOption($newOption);
-            }
-            return 'The options are registered!';
+
+        if ($this->checkIfOptionsAreEmptyOrThereMoreThanOneCorrect($options) || $this->checkIfAtLeastTwoOptionsAreEqual($options)) {
+            throw new Exception('The options are either empty, equal to one another or there is more than one correct option', 1664998229);
         }
-        throw new Exception('The options are either empty, equal to one another or there is more than one correct option', 1664998229);
+
+        foreach ($options as $option) {
+            $newOption = new Option($option['content'], $option['correct'], $question);
+            $this->optionRepository->addOption($newOption);
+            $question->addOption($newOption);
+        }
+
+        return 'The options are registered!';
     }
 
     private function checkIfOptionsAreEmptyOrThereMoreThanOneCorrect(array $options): bool
@@ -41,17 +44,17 @@ class OptionService
         $numberOfCorrectOptions = 0;
         for ($i = 0; $i < count($options); $i++) {
             $content = $options[$i]['content'];
+
             if (strlen($content < self::MIN_LENGTH_OPTION)) {
                 return true;
             };
+
             if ($options[$i]['correct'] === true) {
                 $numberOfCorrectOptions += 1;
             }
         }
-        if ($numberOfCorrectOptions > 1) {
-            return true;
-        }
-        return false;
+
+        return $numberOfCorrectOptions > 1;
     }
 
     private function checkIfAtLeastTwoOptionsAreEqual(array $options): bool
