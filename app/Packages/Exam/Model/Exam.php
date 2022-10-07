@@ -44,12 +44,12 @@ class Exam
     protected \DateTime $endTime;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Subject")
+     * @ORM\ManyToOne(targetEntity="Subject", cascade={"persist"})
      */
     protected Subject $subject;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Packages\Student\Model\Student", inversedBy="id")
+     * @ORM\ManyToOne(targetEntity="App\Packages\Student\Model\Student", inversedBy="id", cascade={"persist"})
      */
     protected Student $student;
 

@@ -6,6 +6,7 @@ use App\Packages\Exam\Model\Option;
 use App\Packages\Exam\Model\Question;
 use App\Packages\Exam\Repository\OptionRepository;
 use App\Packages\Exam\Repository\QuestionRepository;
+use Exception;
 
 class OptionService
 {
@@ -18,33 +19,46 @@ class OptionService
     {
     }
 
+    /**
+     * @throws Exception
+     */
     public function enrollOptions(array $options, string $questionId): string
     {
         $question = $this->questionRepository->findQuestionById($questionId);
-        if (!($this->checkIfOptionsAreEmpty($options) && $this->checkIfAtLeastTwoOptionsAreEqual($options))) {
-            foreach ($options as $option) {
-                $newOption = new Option($option['content'], $option['correct'], $question);
-                $this->optionRepository->addOption($newOption);
-                $question->addOption($newOption);
-            }
-            return 'The options are registered';
+
+        if ($this->checkIfOptionsAreEmptyOrThereMoreThanOneCorrect($options) || $this->checkIfAtLeastTwoOptionsAreEqual($options)) {
+            throw new Exception('The options are either empty, equal to one another or there is more than one correct option', 1664998229);
         }
-        return 'The options are either empty or equal to one another';
+
+        foreach ($options as $option) {
+            $newOption = new Option($option['content'], $option['correct'], $question);
+            $this->optionRepository->addOption($newOption);
+            $question->addOption($newOption);
+        }
+
+        return 'The options are registered!';
     }
 
-    public function checkIfOptionsAreEmpty(array $options): bool
+    private function checkIfOptionsAreEmptyOrThereMoreThanOneCorrect(array $options): bool
     {
-        for ($i = 0; $i <= count($options); $i++) {
+        $numberOfCorrectOptions = 0;
+        for ($i = 0; $i < count($options); $i++) {
             $content = $options[$i]['content'];
-            if (!(strlen($content < self::MIN_LENGTH_OPTION))) {
+
+            if (strlen($content < self::MIN_LENGTH_OPTION)) {
                 return true;
             };
+
+            if ($options[$i]['correct'] === true) {
+                $numberOfCorrectOptions += 1;
+            }
         }
-        return false;
+
+        return $numberOfCorrectOptions > 1;
     }
 
-    public function checkIfAtLeastTwoOptionsAreEqual(array $options): bool
+    private function checkIfAtLeastTwoOptionsAreEqual(array $options): bool
     {
-        return count(array_unique($options, SORT_REGULAR)) === count($options) - 1;
+        return count(array_unique($options, SORT_REGULAR)) < count($options);
     }
 }

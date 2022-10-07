@@ -4,6 +4,8 @@ namespace App\Packages\Student\Service;
 
 use App\Packages\Student\Model\Student;
 use App\Packages\Student\Repository\StudentRepository;
+use Exception;
+use Illuminate\Support\Collection;
 use LaravelDoctrine\ORM\Facades\EntityManager;
 
 class StudentService
@@ -16,6 +18,9 @@ class StudentService
     {
     }
 
+    /**
+     * @throws Exception
+     */
     public function enrollStudent(string $name): string
     {
         if (!$this->checkIfStudentNameIsTooShort($name)) {
@@ -23,10 +28,10 @@ class StudentService
             $this->studentRepository->addStudent($student);
             return 'Student ' . $name . ' registered!';
         }
-        return 'Not enough letters';
+        throw new Exception('The name is too short', 1664905181);
     }
 
-    protected function checkIfStudentNameIsTooShort(string $name): bool
+    private function checkIfStudentNameIsTooShort(string $name): bool
     {
         return strlen($name) < self::MIN_LENGTH_NAME;
     }
@@ -34,5 +39,10 @@ class StudentService
     public function getStudent(string $studentId): Student
     {
         return $this->studentRepository->findStudentById($studentId);
+    }
+
+    public function getStudents(): array
+    {
+        return $this->studentRepository->findAllStudents();
     }
 }

@@ -5,6 +5,7 @@ namespace App\Packages\Exam\Service;
 use App\Packages\Exam\Model\Question;
 use App\Packages\Exam\Repository\QuestionRepository;
 use App\Packages\Exam\Repository\SubjectRepository;
+use Exception;
 
 class QuestionService
 {
@@ -17,19 +18,27 @@ class QuestionService
     {
     }
 
-    public function enrollQuestion(string $content, string $subject): string
+    /**
+     * @throws Exception
+     */
+    public function enrollQuestion(string $content, string $subjectId): string
     {
-        if (!$this->checkIfQuestionIsEmpty($content)) {
-            $subject = $this->subjectRepository->findSubjectByName($subject);
-            $question = new Question($content, $subject);
-            $this->questionRepository->addQuestion($question);
-            return 'Question registered!';
+        if ($this->checkIfQuestionIsTooShort($content)) {
+            throw new Exception('The question should have at least ten characters', 1664994335);
         }
-        return 'Please submit a real question';
+        $subject = $this->subjectRepository->findSubjectById($subjectId);
+        $question = new Question($content, $subject);
+        $this->questionRepository->addQuestion($question);
+        return 'Question registered!';
     }
 
-    public function checkIfQuestionIsEmpty(string $content): bool
+    private function checkIfQuestionIsTooShort(string $content): bool
     {
-        return $content < self::MIN_LENGTH_QUESTION;
+        return strlen($content) < self::MIN_LENGTH_QUESTION;
+    }
+
+    public function getQuestions(): array
+    {
+        return $this->questionRepository->findAllQuestions();
     }
 }

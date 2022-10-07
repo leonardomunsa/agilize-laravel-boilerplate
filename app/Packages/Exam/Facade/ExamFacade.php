@@ -10,6 +10,7 @@ use App\Packages\Exam\Service\QuestionService;
 use App\Packages\Exam\Service\SubjectService;
 use App\Packages\Student\Facade\StudentFacade;
 use App\Packages\Student\Model\Student;
+use Exception;
 
 class ExamFacade
 {
@@ -27,22 +28,41 @@ class ExamFacade
         return $this->subjectService->enrollSubject($name);
     }
 
-    public function enrollQuestion(string $content, string $subject): string
+    public function getSubjects(): array
     {
-        return $this->questionService->enrollQuestion($content, $subject);
+        return $this->subjectService->getSubjects();
     }
 
+    /**
+     * @throws Exception
+     */
+    public function enrollQuestion(string $content, string $subjectId): string
+    {
+        return $this->questionService->enrollQuestion($content, $subjectId);
+    }
+
+    public function getQuestions(): array
+    {
+        return $this->questionService->getQuestions();
+    }
+
+    /**
+     * @throws Exception
+     */
     public function enrollOptions(array $options, string $questionId): string
     {
         return $this->optionService->enrollOptions($options, $questionId);
     }
 
-    public function startExam(Student $student, string $subjectName)
+    public function startExam(Student $student, string $subjectId): Exam
     {
-        return $this->examService->startExam($student, $subjectName);
+        return $this->examService->startExam($student, $subjectId);
     }
 
-    public function finishExam(Exam $exam, array $answers)
+    /**
+     * @throws Exception
+     */
+    public function finishExam(Exam $exam, array $answers): float
     {
         return $this->examService->finishExam($exam, $answers);
     }

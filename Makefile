@@ -23,3 +23,13 @@ all-tests:
 
 key-generate:
 	@docker-compose -f ./docker-compose.yaml exec -T api sh -c "php artisan key:generate"
+
+test:
+	@docker-compose -f ./docker-compose.yaml exec -T api sh -c "vendor/bin/phpunit --filter $(filter-out $@, $(MAKECMDGOALS))"
+
+
+
+
+
+
+

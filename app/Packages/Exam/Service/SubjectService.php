@@ -15,13 +15,13 @@ class SubjectService
 
     public function enrollSubject(string $name): string
     {
-            $subject = new Subject($name);
-            $this->subjectRepository->addSubject($subject);
-            return 'Subject ' . $name . ' registered!';
+        $subject = new Subject($name);
+        $this->subjectRepository->addSubject($subject);
+        return 'Subject ' . $name . ' registered!';
     }
 
-    public function getSubjectByName(string $name): ?Subject
+    public function getSubjects(): array
     {
-        return $this->subjectRepository->findSubjectByName($name);
+        return $this->subjectRepository->findAllSubjects();
     }
 }

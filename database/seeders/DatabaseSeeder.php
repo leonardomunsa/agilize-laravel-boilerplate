@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Packages\Exam\Seed\QuestionOptionSeed;
+use App\Packages\Exam\Seed\SubjectSeed;
+use App\Packages\Student\Seed\StudentSeed;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -12,13 +14,12 @@ class DatabaseSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Exam User',
-        //     'email' => 'test@example.com',
-        // ]);
+        $this->call([
+            StudentSeed::class,
+            SubjectSeed::class,
+            QuestionOptionSeed::class
+        ]);
     }
 }
