@@ -13,7 +13,7 @@ class StudentServiceTest extends TestCase
     /**
      * @throws Exception
      */
-    public function testItShouldReturnExpectedString()
+    public function testEnrollStudentShouldReturnExpectedString()
     {
         /** @var StudentService $studentService */
         $studentService = app(StudentService::class);
@@ -27,7 +27,7 @@ class StudentServiceTest extends TestCase
     /**
      * @throws Exception
      */
-    public function testItShouldThrowAnException()
+    public function testEnrollStudentShouldThrowAnException()
     {
         $this->expectExceptionMessage('The name is too short');
 
@@ -36,7 +36,7 @@ class StudentServiceTest extends TestCase
         $studentService->enrollStudent('a');
     }
 
-    public function testItShouldReturnAStudentObject()
+    public function testGetStudentShouldReturnAStudentObject()
     {
         $student = new Student('Bob');
         $studentRepositoryMock = $this->createMock(StudentRepository::class);
@@ -46,5 +46,17 @@ class StudentServiceTest extends TestCase
         $result = $studentService->getStudent($student->getId());
 
         $this->assertSame($student, $result);
+    }
+
+    public function testGetStudentsShouldReturnAnArray()
+    {
+        $studentRepositoryMock = $this->createMock(StudentRepository::class);
+        $studentRepositoryMock->method('findAllStudents')->willReturn([]);
+
+        /** @var StudentService $studentService */
+        $studentService = app(StudentService::class);
+        $result = $studentService->getStudents();
+
+        $this->assertIsArray($result);
     }
 }

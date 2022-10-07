@@ -86,7 +86,7 @@ class ExamService
         }
     }
 
-    public function getExam($examId)
+    public function getExam($examId): Exam
     {
         return $this->examRepository->findExamById($examId);
     }

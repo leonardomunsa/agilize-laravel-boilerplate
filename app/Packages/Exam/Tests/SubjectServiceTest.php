@@ -9,7 +9,7 @@ use Tests\TestCase;
 
 class SubjectServiceTest extends TestCase
 {
-    public function testItShouldReturnTheExactString()
+    public function testEnrollSubjectShouldReturnTheExactString()
     {
         /** @var SubjectService $subjectService */
         $subjectService = app(SubjectService::class);
@@ -18,5 +18,17 @@ class SubjectServiceTest extends TestCase
         $subject = $subjectService->enrollSubject('Geografia');
 
         $this->assertSame($subject, $result);
+    }
+
+    public function testGetSubjectsShouldReturnAnArray()
+    {
+        $subjectRepositoryMock = $this->createMock(SubjectRepository::class);
+        $subjectRepositoryMock->method('findAllSubjects')->willReturn([]);
+
+        /** @var SubjectService $subjectService */
+        $subjectService = app(SubjectService::class);
+        $result = $subjectService->getSubjects();
+
+        $this->assertIsArray($result);
     }
 }

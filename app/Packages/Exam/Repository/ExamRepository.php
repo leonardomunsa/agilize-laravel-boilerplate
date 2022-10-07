@@ -34,7 +34,7 @@ class ExamRepository extends AbstractRepository
         EntityManager::flush();
     }
 
-    public function findExamById(string $examId)
+    public function findExamById(string $examId): Exam
     {
         return $this->findOneBy(['id' => $examId]);
     }

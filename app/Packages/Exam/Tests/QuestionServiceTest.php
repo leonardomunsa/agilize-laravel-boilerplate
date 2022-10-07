@@ -3,6 +3,7 @@
 namespace App\Packages\Exam\Tests;
 
 use App\Packages\Exam\Model\Subject;
+use App\Packages\Exam\Repository\QuestionRepository;
 use App\Packages\Exam\Repository\SubjectRepository;
 use App\Packages\Exam\Service\QuestionService;
 use App\Packages\Exam\Service\SubjectService;
@@ -14,7 +15,7 @@ class QuestionServiceTest extends TestCase
     /**
      * @throws Exception
      */
-    public function testItShouldReturnTheExactString()
+    public function testEnrollQuestionShouldReturnTheExactString()
     {
         $subject = new Subject('Javascript');
         $subjectRepositoryMock = $this->createMock(SubjectRepository::class);
@@ -31,7 +32,7 @@ class QuestionServiceTest extends TestCase
     /**
      * @throws Exception
      */
-    public function testItShouldThrowAnException()
+    public function testEnrollQuestionShouldThrowAnException()
     {
         $subject = new Subject('Java');
         $subjectRepositoryMock = $this->createMock(SubjectRepository::class);
@@ -43,5 +44,17 @@ class QuestionServiceTest extends TestCase
         /** @var QuestionService $questionService */
         $questionService = app(QuestionService::class);
         $questionService->enrollQuestion('', $subject->getId());
+    }
+
+    public function testGetQuestionsShouldReturnAnArray()
+    {
+        $questionRepositoryMock = $this->createMock(QuestionRepository::class);
+        $questionRepositoryMock->method('findAllQuestions')->willReturn([]);
+
+        /** @var QuestionService $questionService */
+        $questionService = app(QuestionService::class);
+        $result = $questionService->getQuestions();
+
+        $this->assertIsArray($result);
     }
 }

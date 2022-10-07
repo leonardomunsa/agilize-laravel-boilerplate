@@ -59,4 +59,21 @@ class ExamServiceTest extends TestCase
 
         $this->assertSame(10.0, $result);
     }
+
+    public function testGetExamShouldReturnInstanceOfExam()
+    {
+        $subject = new Subject('Português');
+        $student = new Student('Andrea');
+        $exam = new Exam(5, 'open', $subject, $student);
+
+        $examRepositoryMock = $this->createMock(ExamRepository::class);
+        $examRepositoryMock->method('findExamById')->willReturn($exam);
+        $this->app->bind(ExamRepository::class, fn () => $examRepositoryMock);
+
+        /** @var ExamService $examService */
+        $examService = app(ExamService::class);
+        $result = $examService->getExam('b43d4fcb-7be7-4c3e-8752-d0592b0eec6c');
+
+        $this->assertInstanceOf(Exam::class, $result);
+    }
 }
