@@ -24,7 +24,7 @@ class QuestionController
     {
         try {
             $questionContent = $request->get('content');
-            $subjectId = $request->get('subject');
+            $subjectId = $request->get('subjectId');
 
             $response = $this->examFacade->enrollQuestion($questionContent, $subjectId);
             EntityManager::flush();
